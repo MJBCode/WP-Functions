@@ -1,0 +1,26 @@
+{
+    "name": "mjbcode/wp-functions",
+    "type": "package",
+    "description": "Common WordPress functions to include in your project.",
+    "keywords": [
+        "locker",
+        "pid",
+        "php"
+    ],
+    "homepage": "https://github.com/mjbcode/wp-functions/",
+    "license": "GPL-3.0",
+    "authors": [
+        {
+            "name": "Michael J Brancato",
+            "email": "mike@mjbcode.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.0"
+    },
+    "autoload": {
+        "files": [
+            "src/functions.php"
+        ]
+    }
+}
