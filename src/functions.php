@@ -159,3 +159,23 @@ if(!function_exists('basedomain')){
         return implode( '.', array_slice( $parts, ( 0 - $slice ), $slice ) );
     }
 }
+
+if(!function_exists('log_sync_error')){
+    function log_sync_error($type, $message){
+	    // UTC Time
+        date_default_timezone_set('UTC');
+	    
+	    global $wpdb;
+
+	    $query = "
+		    INSERT INTO 
+			    ".$wpdb->prefix."error_log
+		    SET
+			    type='".$type."',
+			    message='".addslashes($message)."',
+			    datetime='".date('Y-m-d H:i:s')."'
+		    ";
+
+	    $wpdb->query($query);
+    }
+}
