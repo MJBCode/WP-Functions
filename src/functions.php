@@ -179,3 +179,56 @@ if(!function_exists('log_sync_error')){
 	    $wpdb->query($query);
     }
 }
+
+if(!function_exists('validateDate')){
+    function validateDate($date, $format = 'Y-m-d H:i:s'){
+        $d = DateTime::createFromFormat($format, $date);
+        return $d && $d->format($format) == $date;
+    }
+}
+
+if(!function_exists('print_r2')){
+    function print_r2($array){
+	    echo '<pre>';
+	    print_r($array);
+	    echo '</pre>';
+    }
+}
+
+if(!function_exists('dd')){
+    function dd($array){
+	    print_r2($array);
+    }
+}
+
+if(!function_exists('convertDateTimeLocal')){
+    function convertDateTimeLocal($datetime){	
+	    if(empty($datetime)) return $datetime;
+	    
+	    $datetime = new DateTime($datetime);
+	    $timezone = new DateTimeZone(get_option('timezone_string'));
+
+	    $datetime->setTimezone($timezone);
+
+	    $datetime = $datetime->format('Y-m-d H:i:s');
+
+	    return $datetime;
+    }
+}
+
+if(!function_exists('convertDateTimeUTC')){
+    function convertDateTimeUTC($datetime){
+	    if(empty($datetime)) return $datetime;
+
+	    date_default_timezone_set(get_option('timezone_string'));
+
+	    $datetime = new DateTime($datetime);
+	    $timezone = new DateTimeZone('UTC');
+
+	    $datetime->setTimezone($timezone);
+
+	    $datetime = $datetime->format('Y-m-d H:i:s');
+
+	    return $datetime;
+    }
+}
