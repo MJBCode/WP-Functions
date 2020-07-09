@@ -232,3 +232,16 @@ if(!function_exists('convertDateTimeUTC')){
 	    return $datetime;
     }
 }
+
+if(!function_exists('getDateTimeFromDates')){
+    function getDateTimeFromDates($start, $finish){
+        if(empty($start) || empty($finish)) return '-';
+
+        $datetime1 = strtotime($start);
+        $datetime2 = strtotime($finish);
+        $interval  = abs($datetime2 - $datetime1);
+        $minutes   = number_format(($interval / 60), 2);
+
+        return $minutes."mins";
+    }
+}
