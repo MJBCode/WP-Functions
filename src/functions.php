@@ -159,3 +159,76 @@ if(!function_exists('basedomain')){
         return implode( '.', array_slice( $parts, ( 0 - $slice ), $slice ) );
     }
 }
+
+if(!function_exists('log_sync_error')){
+    function log_sync_error($type, $message){
+	    // UTC Time
+        date_default_timezone_set('UTC');
+	    
+	    global $wpdb;
+
+	    $query = "
+		    INSERT INTO 
+			    ".$wpdb->prefix."error_log
+		    SET
+			    type='".$type."',
+			    message='".addslashes($message)."',
+			    datetime='".date('Y-m-d H:i:s')."'
+		    ";
+
+	    $wpdb->query($query);
+    }
+}
+
+if(!function_exists('validateDate')){
+    function validateDate($date, $format = 'Y-m-d H:i:s'){
+        $d = DateTime::createFromFormat($format, $date);
+        return $d && $d->format($format) == $date;
+    }
+}
+
+if(!function_exists('print_r2')){
+    function print_r2($array){
+	    echo '<pre>';
+	    print_r($array);
+	    echo '</pre>';
+    }
+}
+
+if(!function_exists('dd')){
+    function dd($array){
+	    print_r2($array);
+    }
+}
+
+if(!function_exists('convertDateTimeLocal')){
+    function convertDateTimeLocal($datetime){	
+	    if(empty($datetime)) return $datetime;
+	    
+	    $datetime = new DateTime($datetime);
+	    $timezone = new DateTimeZone(get_option('timezone_string'));
+
+	    $datetime->setTimezone($timezone);
+
+	    $datetime = $datetime->format('Y-m-d H:i:s');
+
+	    return $datetime;
+    }
+}
+
+if(!function_exists('convertDateTimeUTC')){
+    function convertDateTimeUTC($datetime){
+	    if(empty($datetime)) return $datetime;
+
+	    date_default_timezone_set(get_option('timezone_string'));
+
+	    $datetime = new DateTime($datetime);
+	    $timezone = new DateTimeZone('UTC');
+
+	    $datetime->setTimezone($timezone);
+
+	    $datetime = $datetime->format('Y-m-d H:i:s');
+
+	    return $datetime;
+    }
+}
