@@ -202,11 +202,12 @@ if(!function_exists('dd')){
 }
 
 if(!function_exists('convertDateTimeLocal')){
-    function convertDateTimeLocal($datetime){	
+    function convertDateTimeLocal($datetime, $timezone=""){	
 	    if(empty($datetime)) return $datetime;
-	    
+	   	if(empty($timezone)) $timezone = get_option('timezone_string');
+
 	    $datetime = new DateTime($datetime);
-	    $timezone = new DateTimeZone(get_option('timezone_string'));
+	    $timezone = new DateTimeZone($timezone);
 
 	    $datetime->setTimezone($timezone);
 
@@ -217,10 +218,11 @@ if(!function_exists('convertDateTimeLocal')){
 }
 
 if(!function_exists('convertDateTimeUTC')){
-    function convertDateTimeUTC($datetime){
+    function convertDateTimeUTC($datetime, $timezone=""){
 	    if(empty($datetime)) return $datetime;
-
-	    date_default_timezone_set(get_option('timezone_string'));
+	    if(empty($timezone)) $timezone = get_option('timezone_string');
+	    
+	    date_default_timezone_set($timezone);
 
 	    $datetime = new DateTime($datetime);
 	    $timezone = new DateTimeZone('UTC');
@@ -245,3 +247,4 @@ if(!function_exists('getDateTimeFromDates')){
         return $minutes."mins";
     }
 }
+
