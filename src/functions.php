@@ -99,7 +99,7 @@ if(!function_exists('query_builder')){
 
 		global $wpdb;
 
-		$table = $wpdb->prefix.$table;
+		if(strpos($table, $wpdb->prefix)===FALSE) $table = $wpdb->prefix.$table;
 
 	    if(empty($exclude)) $exclude = array('option_page', 'action', '_wpnonce', '_wp_http_referer', 'submit');
 
@@ -202,11 +202,12 @@ if(!function_exists('dd')){
 }
 
 if(!function_exists('convertDateTimeLocal')){
-    function convertDateTimeLocal($datetime){	
+    function convertDateTimeLocal($datetime, $timezone=""){	
 	    if(empty($datetime)) return $datetime;
-	    
+	   	if(empty($timezone)) $timezone = get_option('timezone_string');
+
 	    $datetime = new DateTime($datetime);
-	    $timezone = new DateTimeZone(get_option('timezone_string'));
+	    $timezone = new DateTimeZone($timezone);
 
 	    $datetime->setTimezone($timezone);
 
@@ -217,10 +218,11 @@ if(!function_exists('convertDateTimeLocal')){
 }
 
 if(!function_exists('convertDateTimeUTC')){
-    function convertDateTimeUTC($datetime){
+    function convertDateTimeUTC($datetime, $timezone=""){
 	    if(empty($datetime)) return $datetime;
-
-	    date_default_timezone_set(get_option('timezone_string'));
+	    if(empty($timezone)) $timezone = get_option('timezone_string');
+	    
+	    date_default_timezone_set($timezone);
 
 	    $datetime = new DateTime($datetime);
 	    $timezone = new DateTimeZone('UTC');
@@ -244,4 +246,38 @@ if(!function_exists('getDateTimeFromDates')){
 
         return $minutes."mins";
     }
+}
+
+if(!function_exists('xmlToArray')){
+    function xmlToArray($path){
+        $xmlfile = file_get_contents($path);
+        $ob= simplexml_load_string($xmlfile);
+        $json  = json_encode($ob);
+        $configData = json_decode($json, true);
+
+        return $configData;
+    }
+}
+
+if(!function_exists('updateCronMeta')){
+	function updateCronMeta($data_array, $table, $insert_array=array()){
+	    global $wpdb;
+
+	    foreach($data_array as $key=>$value){
+	        $update_query = build_the_query($value);
+
+	        $insert_query = build_the_query($insert_array);
+	        if(!empty($insert_query)) $insert_query = ",".$insert_query; 
+
+	        $query = "INSERT INTO
+	                    ".$table."
+	                    SET
+	                        ".$update_query.$insert_query."
+	                    ON DUPLICATE KEY UPDATE
+	                    ".$update_query."
+	                ";
+
+	        $wpdb->query($query);
+	    }
+	}
 }
