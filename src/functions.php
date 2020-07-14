@@ -259,3 +259,25 @@ if(!function_exists('xmlToArray')){
     }
 }
 
+if(!function_exists('updateCronMeta')){
+	function updateCronMeta($data_array, $table, $insert_array=array()){
+	    global $wpdb;
+
+	    foreach($data_array as $key=>$value){
+	        $update_query = build_the_query($value);
+
+	        $insert_query = build_the_query($insert_array);
+	        if(!empty($insert_query)) $insert_query = ",".$insert_query; 
+
+	        $query = "INSERT INTO
+	                    ".$table."
+	                    SET
+	                        ".$update_query.$insert_query."
+	                    ON DUPLICATE KEY UPDATE
+	                    ".$update_query."
+	                ";
+
+	        $wpdb->query($query);
+	    }
+	}
+}
