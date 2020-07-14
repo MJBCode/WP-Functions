@@ -99,7 +99,7 @@ if(!function_exists('query_builder')){
 
 		global $wpdb;
 
-		$table = $wpdb->prefix.$table;
+		if(strpos($table, $wpdb->prefix)===FALSE) $table = $wpdb->prefix.$table;
 
 	    if(empty($exclude)) $exclude = array('option_page', 'action', '_wpnonce', '_wp_http_referer', 'submit');
 
@@ -245,6 +245,17 @@ if(!function_exists('getDateTimeFromDates')){
         $minutes   = number_format(($interval / 60), 2);
 
         return $minutes."mins";
+    }
+}
+
+if(!function_exists('xmlToArray')){
+    function xmlToArray($path){
+        $xmlfile = file_get_contents($path);
+        $ob= simplexml_load_string($xmlfile);
+        $json  = json_encode($ob);
+        $configData = json_decode($json, true);
+
+        return $configData;
     }
 }
 
