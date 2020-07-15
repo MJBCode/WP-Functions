@@ -281,3 +281,25 @@ if(!function_exists('updateCronMeta')){
 	    }
 	}
 }
+
+if(!function_exists('getLatestId')){
+    function getLatestId($table, $column, $ai=true, $add_prefix=false){
+        global $wpdb;
+
+        if($add_prefix) $table = $wpdb->prefix.$table;
+
+        $query = '
+            SELECT
+                MAX('.$column.')
+            FROM
+                '.$table.'
+            LIMIT 1
+        ';
+
+        $id = $wpdb->get_var($query);
+
+        if($ai) $id++;
+
+        return $id;
+    }
+}
