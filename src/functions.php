@@ -323,7 +323,7 @@ if(!function_exists('validStatusCode')){
     function validStatusCode($url, $valid_codes=array(200, 301, 302)){
         $http_code = getStatusCode($url);
         
-        if(in_array($http_code, $valid_codes){
+        if(in_array($http_code, $valid_codes)){
             return true;        
         } else {
             return false;
