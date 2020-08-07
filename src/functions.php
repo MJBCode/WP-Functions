@@ -330,3 +330,31 @@ if(!function_exists('validStatusCode')){
         }
     }
 }
+
+if(!function_exists('get_arg_string')){
+    function get_arg_string($args){
+	    $arg_array = array();
+
+	    foreach($args as $key=>$value){
+		    $arg_array[] = '--'.$key.'='.$value;
+	    }
+
+	    $arg_string = implode(' ', $arg_array);
+
+	    return $arg_string;
+    }
+}
+
+if(!function_exists('get_env_string')){
+    function get_env_string($env){
+	    $env_array = array();
+
+	    foreach($env as $key=>$value){
+		    $env_array[] = $key.'='.$value;
+	    }
+
+	    $env_string = implode(' ', $env_array);
+
+	    return $env_string;
+    }
+}
