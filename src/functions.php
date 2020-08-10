@@ -6,6 +6,25 @@ if(!function_exists('remove_emoji')){
     }
 }
 
+if(!function_exists('bulk_insert')){
+    function bulk_insert($table, $array, $remove_emojis=true){	
+		global $wpdb;
+
+		$query = "INSERT INTO ".$wpdb->prefix.$table." (".implode(',', array_keys(reset($array))).") VALUES ";
+
+	    $array_values = array();
+	    foreach($array as $key=>$row){
+	    	$row['description'] = remove_emoji($row['description']);
+	  
+	       	$array_values[] = '("'.implode('","', array_values($row)).'")';
+	    }
+
+	    $query .= implode(',', $array_values);
+	    
+	    $wpdb->query($query);
+	}
+}
+
 if(!function_exists('get_user_role')){
 	function get_user_role() {
 	 	global $wp_roles;
@@ -358,3 +377,4 @@ if(!function_exists('get_env_string')){
 	    return $env_string;
     }
 }
+
