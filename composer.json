@@ -1,5 +1,5 @@
 {
-    "name": "mjbcode/wp-functions",
+    "name": "sgtcoder/wp-functions",
     "type": "package",
     "description": "Common WordPress functions to include in your project.",
     "keywords": [
@@ -7,12 +7,12 @@
         "pid",
         "php"
     ],
-    "homepage": "https://github.com/mjbcode/wp-functions/",
+    "homepage": "https://github.com/sgtcoder/wp-functions/",
     "license": "GPL-3.0",
     "authors": [
         {
             "name": "Michael J Brancato",
-            "email": "mike@mjbcode.com"
+            "email": "usmccoder@gmail.com"
         }
     ],
     "require": {
