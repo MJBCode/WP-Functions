@@ -6,16 +6,28 @@ if(!function_exists('remove_emoji')){
     }
 }
 
+if(!function_exists('ascii_only')){
+    function ascii_only($text){
+        return preg_replace('/[[:^print:]]/', '', $text);
+    }
+}
+
 if(!function_exists('bulk_insert')){
-    function bulk_insert($table, $array, $remove_emojis=true){	
+    function bulk_insert($table, $array, $ascii_only=true){	
 		global $wpdb;
 
 		$query = "INSERT INTO ".$wpdb->prefix.$table." (".implode(',', array_keys(reset($array))).") VALUES ";
 
 	    $array_values = array();
 	    foreach($array as $key=>$row){
-	    	$row['description'] = remove_emoji($row['description']);
-	  
+	    	if($ascii_only){
+				$keys = array_keys($row);
+
+		    	foreach($keys as $key){
+		    		$row[$key] = ascii_only($row[$key]);
+		    	}
+	    	}
+
 	       	$array_values[] = '("'.implode('","', array_values($row)).'")';
 	    }
 
