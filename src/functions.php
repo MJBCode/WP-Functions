@@ -390,3 +390,13 @@ if(!function_exists('get_env_string')){
     }
 }
 
+if(!function_exists('array_map_assoc')){
+	function array_map_assoc($func, $ar){
+		$rv = array();
+		foreach($ar as $key => $val){
+			$func($key, $val);
+			$rv[$key] = $val;
+		}
+		return $rv;
+	}
+}
