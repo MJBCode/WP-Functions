@@ -130,7 +130,7 @@ if(!function_exists('query_builder')){
 
 		global $wpdb;
 
-		if(strpos($table, $wpdb->prefix)===FALSE) $table = $wpdb->prefix.$table;
+		if(strpos($table, $wpdb->prefix)===FALSE && strpos($table, 'wp_')===FALSE) $table = $wpdb->prefix.$table;
 
 	    if(empty($exclude)) $exclude = array('option_page', 'action', '_wpnonce', '_wp_http_referer', 'submit');
 
